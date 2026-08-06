@@ -208,13 +208,20 @@
     .btn-download i { font-size: 14px; }
 
     /* ===== 下载列表 ===== */
+
+    /* ===== 页脚 ===== */
+    footer {
       text-align: center;
       padding: 30px 0;
       color: rgba(255, 255, 255, 0.4);
       font-size: 13px;
     }
 
-    footer a { color: rgba(255, 255, 255, 0.5); text-decoration: none; }
+    footer a {
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+    }
+
     footer a:hover { color: #a18cd1; }
 
     @media (max-width: 600px) {
@@ -348,7 +355,10 @@
     </div>
 
     <footer>
-      <a href="../TectDos/index.html"><i class="fas fa-arrow-left"></i> 返回 TectDos 首页</a> · &copy; 2026 AI Skills
+      <a href="https://github.com/farmer-snack/farmer-snack.github.io" target="_blank"><i class="fab fa-github"></i> GitHub</a> ·
+      <a href="../TectDos/terms.html"><i class="fas fa-file-contract"></i> 用户条款</a> ·
+      &copy; 2026 AI Skills ·
+      <span>第 <span id="updateCount">--</span> 次更新</span>
     </footer>
 
   </div>
@@ -386,6 +396,21 @@
         document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
       });
     });
+
+    // 获取更新次数
+    (async () => {
+      const FALLBACK_COUNT = 1;
+      const el = document.getElementById('updateCount');
+      try {
+        const r = await fetch('https://api.github.com/repos/farmer-snack/farmer-snack.github.io/commits?per_page=1');
+        const link = r.headers.get('Link');
+        if (link) {
+          const m = link.match(/page=(\d+)>; rel="last"/);
+          if (m) { el.textContent = m[1]; return; }
+        }
+      } catch {}
+      el.textContent = FALLBACK_COUNT;
+    })();
   </script>
 
 </body>
