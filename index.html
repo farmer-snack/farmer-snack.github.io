@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Center 下载中心</title>
+  <link rel="icon" href="DownLoads/TectDos/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      background: url('DownLoads/TectDos/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 0;
+    }
+
+    /* ===== 导航栏 ===== */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+    }
+
+    .navbar .logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .navbar .logo img { width: 28px; height: 28px; border-radius: 4px; }
+
+    .navbar .nav-links { display: flex; gap: 26px; list-style: none; }
+
+    .navbar .nav-links a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .navbar .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+      transition: width 0.3s;
+    }
+
+    .navbar .nav-links a:hover { color: #fff; }
+    .navbar .nav-links a:hover::after { width: 100%; }
+
+    /* ===== 主体 ===== */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 100px 20px 40px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 40px 0 50px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 15px;
+      margin-top: 10px;
+    }
+
+    /* ===== 卡片 ===== */
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 i {
+      margin-right: 10px;
+      color: #a18cd1;
+    }
+
+    /* ===== 下载入口 ===== */
+    .download-entry {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .entry {
+      flex: 1;
+      min-width: 260px;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      text-decoration: none;
+      color: #fff;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+
+    .entry:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+      border-color: rgba(161, 140, 209, 0.5);
+    }
+
+    .entry .icon {
+      width: 70px; height: 70px;
+      margin: 0 auto 16px;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: #1a1a2e;
+    }
+
+    .entry .name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .entry .desc {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .entry .go {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 8px 24px;
+      background: rgba(161, 140, 209, 0.25);
+      border: 1px solid rgba(161, 140, 209, 0.4);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .entry:hover .go { background: rgba(161, 140, 209, 0.4); }
+
+    /* ===== 更新列表 ===== */
+    .update-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      align-items: flex-start;
+    }
+
+    .update-item .date {
+      flex-shrink: 0;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.45);
+      min-width: 90px;
+      padding-top: 2px;
+    }
+
+    .update-item .badge {
+      flex-shrink: 0;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .badge-site { background: rgba(161, 140, 209, 0.3); color: #d6c9f2; }
+    .badge-prog { background: rgba(251, 194, 235, 0.25); color: #fbc2eb; }
+
+    .update-item .txt {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .update-item .ver {
+      flex-shrink: 0;
+      padding: 2px 10px;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      border-radius: 12px;
+      color: #1a1a2e;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 13px;
+    }
+
+    footer a { color: rgba(255, 255, 255, 0.5); text-decoration: none; }
+    footer a:hover { color: #a18cd1; }
+
+    @media (max-width: 600px) {
+      .navbar { padding: 0 20px; }
+      .navbar .nav-links { gap: 16px; }
+      .navbar .nav-links a { font-size: 13px; }
+      .hero h1 { font-size: 30px; }
+      .card { padding: 22px; }
+      .update-item { flex-wrap: wrap; }
+      .update-item .date { min-width: 70px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== 导航栏 ===== -->
+  <nav class="navbar">
+    <div class="logo"><img src="DownLoads/TectDos/icon.svg" alt=""> Download Center</div>
+    <ul class="nav-links">
+      <li><a href="#download"><i class="fas fa-download"></i> 下载</a></li>
+      <li><a href="#updates"><i class="fas fa-clock-rotate-left"></i> 更新</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== 主体 ===== -->
+  <div class="container">
+
+    <div class="hero">
+      <h1>下载中心</h1>
+      <p>主站 · 程序下载与更新动态</p>
+    </div>
+
+    <!-- ===== 前往下载 ===== -->
+    <div class="card" id="download">
+      <h2><i class="fas fa-download"></i> 前往下载</h2>
+      <div class="download-entry">
+
+        <a href="DownLoads/TectDos/index.html" class="entry">
+          <div class="icon"><i class="fas fa-terminal"></i></div>
+          <div class="name">TectDos</div>
+          <div class="desc">系统工具软件<br>主程序安装包 · 依赖组件 · 使用说明</div>
+          <span class="go"><i class="fas fa-arrow-right"></i> 前往下载</span>
+        </a>
+
+        <a href="DownLoads/AI/index.html" class="entry">
+          <div class="icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+          <div class="name">AI Skills</div>
+          <div class="desc">9 个实用 AI 技能合集<br>画图 · PPT · 文档 · 浏览器自动化</div>
+          <span class="go"><i class="fas fa-arrow-right"></i> 前往下载</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ===== 近期更新 ===== -->
+    <div class="card" id="updates">
+      <h2><i class="fas fa-clock-rotate-left"></i> 近期网站和程序更新</h2>
+
+      <div class="update-item">
+        <span class="date">2026-08-06</span>
+        <span class="badge badge-site">网站</span>
+        <span class="txt">下载中心主站上线，整合 TectDos 与 AI Skills 下载入口</span>
+      </div>
+
+      <div class="update-item">
+        <span class="date">2026-08-06</span>
+        <span class="badge badge-site">网站</span>
+        <span class="txt">新增 AI Skills 下载页，提供 9 个实用技能打包下载</span>
+      </div>
+
+      <div class="update-item">
+        <span class="date">2026-07-30</span>
+        <span class="badge badge-prog">程序</span>
+        <span class="ver">3.0.0 beta</span>
+        <span class="txt">全面换新架构，更快的速度，更好的体验</span>
+      </div>
+
+      <div class="update-item">
+        <span class="date">2026-07-30</span>
+        <span class="badge badge-site">网站</span>
+        <span class="txt">反馈表单新增验证码、IP 与地理位置采集</span>
+      </div>
+
+      <div class="update-item">
+        <span class="date">2026-07-29</span>
+        <span class="badge badge-site">网站</span>
+        <span class="txt">TectDos 官网上线：程序下载、依赖组件、问题反馈、用户条款</span>
+      </div>
+
+    </div>
+
+    <footer>
+      <a href="DownLoads/TectDos/terms.html"><i class="fas fa-file-contract"></i> 用户条款</a> · &copy; 2026 Download Center
+    </footer>
+
+  </div>
+
+  <script>
+    // 平滑滚动
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        const id = this.getAttribute('href').slice(1);
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TectDos v3.0.0 beta</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      background: url('bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 0;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+    }
+
+    .navbar .logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .navbar .logo img {
+      width: 28px; height: 28px;
+      border-radius: 4px;
+    }
+
+    .navbar .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .navbar .nav-links a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    .navbar .nav-links a:hover { color: #fff; }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 100px 20px 40px;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .page-title h1 {
+      font-size: 32px;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .page-title p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .two-col {
+      display: flex;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .two-col .col {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 16px;
+      padding: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      height: 100%;
+    }
+
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card h2 i { color: #a18cd1; margin-right: 8px; }
+
+    .version-badge {
+      display: inline-block;
+      padding: 4px 14px;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      border-radius: 20px;
+      color: #1a1a2e;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .info-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      margin-bottom: 14px;
+    }
+
+    .info-line .label {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 13px;
+      min-width: 70px;
+    }
+
+    .info-line .value {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 36px;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      border: none;
+      border-radius: 10px;
+      color: #1a1a2e;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 25px rgba(161, 140, 209, 0.4);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.18); }
+
+    /* 文档内容区域 */
+    .doc-content {
+      font-size: 13px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.9);
+      white-space: pre-wrap;
+      word-break: break-all;
+      font-family: "Consolas", "Courier New", monospace;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .doc-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .doc-content::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+    }
+
+    .doc-content::-webkit-scrollbar-thumb {
+      background: rgba(161, 140, 209, 0.4);
+      border-radius: 3px;
+    }
+
+    .download-area {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .changelog {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .changelog h3 {
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    .changelog h3 i { color: #a18cd1; margin-right: 6px; }
+
+    .changelog-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+    }
+
+    .changelog-ver {
+      flex-shrink: 0;
+      padding: 1px 10px;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      border-radius: 12px;
+      color: #1a1a2e;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .changelog-text {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.5;
+    }
+
+    .file-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+    }
+
+    .file-badge .icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .file-badge .info { flex: 1; }
+    .file-badge .info .name { font-weight: 600; font-size: 15px; }
+    .file-badge .info .meta { color: rgba(255, 255, 255, 0.5); font-size: 12px; margin-top: 2px; }
+
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 13px;
+      margin-top: 40px;
+    }
+
+    footer a { color: rgba(255, 255, 255, 0.5); text-decoration: none; }
+    footer a:hover { color: #a18cd1; }
+
+    @media (max-width: 700px) {
+      .two-col { flex-direction: column; }
+      .navbar { padding: 0 20px; }
+      .navbar .nav-links { gap: 14px; }
+      .navbar .nav-links a { font-size: 13px; }
+      .page-title h1 { font-size: 24px; }
+      .card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" style="text-decoration:none;color:inherit;"><div class="logo"><img src="icon.svg" alt=""> TectDos</div></a>
+    <ul class="nav-links">
+      <li><a href="index.html#download"><i class="fas fa-download"></i> 下载</a></li>
+      <li><a href="index.html#depends"><i class="fas fa-boxes"></i> 依赖</a></li>
+      <li><a href="index.html#feedback"><i class="fas fa-comment"></i> 反馈</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+
+    <div class="page-title">
+      <h1><i class="fas fa-terminal"></i> TectDos</h1>
+      <p>主程序安装包 · 版本 3.0.0 beta</p>
+    </div>
+
+    <div class="two-col">
+
+      <!-- 左列：版本信息 + 下载 -->
+      <div class="col">
+        <div class="card">
+          <h2><i class="fas fa-info-circle"></i> 版本信息</h2>
+          <span class="version-badge">v3.0.0 beta</span>
+
+          <div class="info-line">
+            <span class="label"><i class="fas fa-code-branch"></i> 版本</span>
+            <span class="value">3.0.0 beta</span>
+          </div>
+          <div class="info-line">
+            <span class="label"><i class="fas fa-calendar"></i> 更新</span>
+            <span class="value">2026.04.04</span>
+          </div>
+          <div class="info-line">
+            <span class="label"><i class="fas fa-windows"></i> 平台</span>
+            <span class="value">Windows</span>
+          </div>
+
+          <div class="download-area">
+            <div class="file-badge">
+              <div class="icon"><i class="fas fa-download"></i></div>
+              <div class="info">
+                <div class="name">DownLoad.exe</div>
+                <div class="meta">主程序安装包 · 一键安装</div>
+              </div>
+            </div>
+            <a href="DownLoad.exe" class="btn-primary"><i class="fas fa-download"></i> 立即下载</a>
+          </div>
+
+          <div class="changelog">
+            <h3><i class="fas fa-history"></i> 更新日志</h3>
+            <div class="changelog-item">
+              <span class="changelog-ver">v3.0.0 beta</span>
+              <span class="changelog-text">全面换新架构 更快的速度 更好的体验</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右列：使用说明 -->
+      <div class="col">
+        <div class="card">
+          <h2><i class="fas fa-book"></i> 使用说明</h2>
+          <div class="doc-content">TectDos 使用说明
+版本：2026.4.4 17:00
+2.print+窗口代词 输出窗口名称
+3.fullt+窗口代词 使指定窗口完全全屏
+4.full  使TextDos全屏并置顶（mexit和exit会被ban）
+5.octer 扣字机（具体看idea【输入octer idea】)
+7.ban+功能名 使指定功能需要密码（all是所有功能）【二次输入关闭】
+8.write+文件 编辑指定文件（endof结束）
+9.delete (向指定文件注入杀软测试代码）
+...............1./   exp+文件
+...............2./   dir+文件夹
+10.read+文件 读取指定文件
+11.sudo 提权（提权后不再需要输密码【二次输入关闭】）
+16.get 获得权限（需有管理员权限）
+...............1./   list 查看可提升的权限
+...............2./   idea 添加指令提示
+...............3./   list中可提升的权限+文件夹
+21.shell 提升权限
+...............1./   list 查看可选提权方式
+...............2./   list中可选的提权方式 提权（获得管理员权限）
+24.power 懒得写+1
+25.guard+bool值 打开/关闭守门人（控制关机）
+26.exit 退出
+27.sch/cls 清屏
+28.web+网址 打开指定网页
+29.cp 复制主程序到指定目录
+30.mexit 强制退出
+31.set 设置路径显示
+...............1./   show 显示路径（二次会隐藏）
+32.listen 监听键盘，鼠标，剪贴板（需要管理员权限）
+33.cmdlet
+34.ka+ 开启内存压缩（需要管理员权限）
+35.ka- 关闭内存压缩（需要管理员权限）
+36.geofs 激活程序 杀软可能报毒，因为涉及文件释放</div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <a href="index.html"><i class="fas fa-arrow-left"></i> 返回首页</a> · &copy; 2026 TectDos ·
+      <span>第 <span id="updateCount">--</span> 次更新</span>
+    </footer>
+
+  </div>
+
+  <script>
+    (async () => {
+      const FALLBACK_COUNT = 21;
+      const el = document.getElementById('updateCount');
+      try {
+        const r = await fetch('https://api.github.com/repos/farmer-snack/WebSet/commits?per_page=1');
+        const link = r.headers.get('Link');
+        if (link) {
+          const m = link.match(/page=(\d+)>; rel="last"/);
+          if (m) { el.textContent = m[1]; return; }
+        }
+      } catch {}
+      el.textContent = FALLBACK_COUNT;
+    })();
+  </script>
+
+</body>
+</html>

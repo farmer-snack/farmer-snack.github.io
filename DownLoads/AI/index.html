@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Skills 下载 - 9个实用技能</title>
+  <link rel="icon" href="../TectDos/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      background: url('../TectDos/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 0;
+    }
+
+    /* ===== 导航栏 ===== */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+    }
+
+    .navbar .logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .navbar .logo img { width: 28px; height: 28px; border-radius: 4px; }
+
+    .navbar .nav-links { display: flex; gap: 24px; list-style: none; }
+
+    .navbar .nav-links a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .navbar .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+      transition: width 0.3s;
+    }
+
+    .navbar .nav-links a:hover { color: #fff; }
+    .navbar .nav-links a:hover::after { width: 100%; }
+
+    /* ===== 主体 ===== */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 100px 20px 40px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 30px 0 40px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 15px;
+      margin-top: 10px;
+    }
+
+    .hero .badge {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 5px 16px;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      border-radius: 20px;
+      color: #1a1a2e;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* ===== 卡片 ===== */
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 i {
+      margin-right: 10px;
+      color: #a18cd1;
+    }
+
+    /* ===== 下载列表 ===== */
+    .skill-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      transition: background 0.3s;
+    }
+
+    .skill-item:hover { background: rgba(255, 255, 255, 0.1); }
+
+    .skill-item .num {
+      width: 40px; height: 40px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+      color: #1a1a2e;
+    }
+
+    .skill-item .skill-icon {
+      width: 44px; height: 44px;
+      flex-shrink: 0;
+      background: rgba(161, 140, 209, 0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #a18cd1;
+    }
+
+    .skill-item .info { flex: 1; min-width: 0; }
+
+    .skill-item .info .name { font-weight: 600; font-size: 15px; }
+
+    .skill-item .info .desc {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      border: none;
+      border-radius: 10px;
+      color: #1a1a2e;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      flex-shrink: 0;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-download:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 25px rgba(161, 140, 209, 0.4);
+    }
+
+    .btn-download i { font-size: 14px; }
+
+    /* ===== 下载列表 ===== */
+      text-align: center;
+      padding: 30px 0;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 13px;
+    }
+
+    footer a { color: rgba(255, 255, 255, 0.5); text-decoration: none; }
+    footer a:hover { color: #a18cd1; }
+
+    @media (max-width: 600px) {
+      .navbar { padding: 0 20px; }
+      .navbar .nav-links { gap: 14px; }
+      .navbar .nav-links a { font-size: 13px; }
+      .hero h1 { font-size: 26px; }
+      .card { padding: 20px; }
+      .skill-item { flex-wrap: wrap; }
+      .btn-download { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== 导航栏 ===== -->
+  <nav class="navbar">
+    <a href="../TectDos/index.html" style="text-decoration:none;color:inherit;"><div class="logo"><img src="../TectDos/icon.svg" alt=""> AI Skills</div></a>
+    <ul class="nav-links">
+      <li><a href="#downloads"><i class="fas fa-download"></i> 下载</a></li>
+      <li><a href="../TectDos/index.html"><i class="fas fa-home"></i> 返回首页</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== 主体 ===== -->
+  <div class="container">
+
+    <div class="hero">
+      <h1><i class="fas fa-wand-magic-sparkles"></i> AI Skills 合集</h1>
+      <p>9 个让 AI 样样都行的实用技能，装完即用！</p>
+      <span class="badge"><i class="fas fa-fire"></i> 最后一个全场最佳</span>
+    </div>
+
+    <!-- ===== 下载区域 ===== -->
+    <div class="card" id="downloads">
+      <h2><i class="fas fa-download"></i> 技能下载</h2>
+
+      <div class="skill-item">
+        <div class="num">01</div>
+        <div class="skill-icon"><i class="fas fa-palette"></i></div>
+        <div class="info">
+          <div class="name">image-create</div>
+          <div class="desc">AI 变身画师，一句话生成图片，免费无需 API 密钥</div>
+        </div>
+        <a href="01-image-create.zip" class="btn-download" download><i class="fas fa-download"></i> 下载</a>
+      </div>
+
+      <div class="skill-item">
+        <div class="num">02</div>
+        <div class="skill-icon"><i class="fas fa-file-powerpoint"></i></div>
+        <div class="info">
+          <div class="name">ppt-generation</div>
+          <div class="desc">一句话生成配图并自动拼装成完整 PowerPoint</div>
+        </div>
+        <a href="02-ppt-generation.zip" class="btn-download" download><i class="fas fa-download"></i> 下载</a>
+      </div>
+
+      <div class="skill-item">
+        <div class="num">03</div>
+        <div class="skill-icon"><i class="fas fa-file-word"></i></div>
+        <div class="info">
+          <div class="name">docx</div>
+          <div class="desc">创建编辑 Word 文档：目录、页码、信头、插图全搞定</div>
+        </div>
+        <a href="03-docx.zip" class="btn-download" download><i class="fas fa-download"></i> 下载</a>
+      </div>
+
+      <div class="skill-item">
+        <div class="num">04</div>
+        <div class="skill-icon"><i class="fas fa-compress"></i></div>
+        <div class="info">
+          <div class="name">summarize</div>
+          <div class="desc">信息压缩器：视频、文章、PDF 三十秒提炼核心要点</div>
+        </div>
+        <a href="04-summarize.zip" class="btn-download" download><i class="fas fa-download"></i> 下载</a>
+      </div>
+
+      <div class="skill-item">
+        <div class="num">05</div>
+        <div class="skill-icon"><i class="fas fa-globe"></i></div>
+        <div class="info">
+          <div class="name">agent-browser</div>
+          <div class="desc">AI 控制浏览器：自动填表、点按钮、截图、采集数据</div>
+        </div>
+        <a href="05-agent-browser.zip" class="btn-download" download><i class="fas fa-download"></i> 下载</a>
+      </div>
+
+      <div class="skill-item">
+        <div class="num">06</div>
+        <div class="skill-icon"><i class="fas fa-bolt"></i></div>
+        <div class="info">
+          <div class="name">browser-use</div>
+          <div class="desc">CDP 协议直接操控浏览器，自动化能力更强</div>
+        </div>
+        <a href="06-browser-use.zip" class="btn-download" download><i class="fas fa-download"></i> 下载</a>
+      </div>
+
+      <div class="skill-item">
+        <div class="num">07</div>
+        <div class="skill-icon"><i class="fas fa-vial"></i></div>
+        <div class="info">
+          <div class="name">test-driven-development</div>
+          <div class="desc">编程神功：先写测试再写代码，Bug 断崖式减少</div>
+        </div>
+        <a href="07-test-driven-development.zip" class="btn-download" download><i class="fas fa-download"></i> 下载</a>
+      </div>
+
+      <div class="skill-item">
+        <div class="num">08</div>
+        <div class="skill-icon"><i class="fas fa-code-branch"></i></div>
+        <div class="info">
+          <div class="name">git-update</div>
+          <div class="desc">程序员福音：一句话自动 add / commit / push</div>
+        </div>
+        <a href="08-git-update.zip" class="btn-download" download><i class="fas fa-download"></i> 下载</a>
+      </div>
+
+      <div class="skill-item" style="border:1px solid rgba(251,194,235,0.4);">
+        <div class="num" style="background:linear-gradient(135deg,#fbc2eb,#a18cd1);">09</div>
+        <div class="skill-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="info">
+          <div class="name">skill-creator <i class="fas fa-star" style="color:#fbc2eb;font-size:12px;"></i> 全场最佳</div>
+          <div class="desc">教 AI 自己写新技能，把你的经验封装成可调用的 skill</div>
+        </div>
+        <a href="09-skill-creator.zip" class="btn-download" download><i class="fas fa-download"></i> 下载</a>
+      </div>
+
+      <div style="margin-top:20px;">
+        <a href="all-skills.zip" class="btn-download" download style="width:100%;justify-content:center;padding:14px;"><i class="fas fa-download"></i> 一键下载全部 9 个 Skill</a>
+      </div>
+    </div>
+
+    <footer>
+      <a href="../TectDos/index.html"><i class="fas fa-arrow-left"></i> 返回 TectDos 首页</a> · &copy; 2026 AI Skills
+    </footer>
+
+  </div>
+
+  <script>
+    // 强制下载
+    document.querySelectorAll('.btn-download[download]').forEach(a => {
+      a.addEventListener('click', async function (e) {
+        e.preventDefault();
+        const url = this.getAttribute('href');
+        const filename = url.split('/').pop() || url;
+        try {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error();
+          const blob = await res.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          const tmp = document.createElement('a');
+          tmp.href = blobUrl;
+          tmp.download = filename;
+          document.body.appendChild(tmp);
+          tmp.click();
+          document.body.removeChild(tmp);
+          URL.revokeObjectURL(blobUrl);
+        } catch {
+          window.location.href = url;
+        }
+      });
+    });
+
+    // 平滑滚动
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        const id = this.getAttribute('href').slice(1);
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>
