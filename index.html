@@ -129,6 +129,97 @@
       color: #a18cd1;
     }
 
+    .card .subtitle {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    /* ===== 反馈表单 ===== */
+    .form-group { margin-bottom: 18px; }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .form-group label .required { color: #fbc2eb; margin-left: 2px; }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #a18cd1;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    .form-group select option { color: #333; background: #fff; }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .btn-submit {
+      padding: 13px 40px;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      border: none;
+      border-radius: 10px;
+      color: #1a1a2e;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-submit:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 25px rgba(161, 140, 209, 0.4);
+    }
+
+    /* ===== Toast 提示 ===== */
+    .toast {
+      position: fixed;
+      top: 80px; left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 14px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s;
+      z-index: 200;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .toast.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
     /* ===== 下载入口 ===== */
     .download-entry {
       display: flex;
@@ -263,12 +354,15 @@
 </head>
 <body>
 
+  <div class="toast" id="toast"></div>
+
   <!-- ===== 导航栏 ===== -->
   <nav class="navbar">
     <div class="logo"><img src="icon.svg" alt=""> Download Center</div>
     <ul class="nav-links">
       <li><a href="DownLoads/index.html"><i class="fas fa-download"></i> 下载中心</a></li>
       <li><a href="#updates"><i class="fas fa-clock-rotate-left"></i> 更新</a></li>
+      <li><a href="#feedback"><i class="fas fa-comment"></i> 反馈</a></li>
     </ul>
   </nav>
 
@@ -346,6 +440,70 @@
 
     </div>
 
+    <!-- ===== 反馈区域 ===== -->
+    <div class="card" id="feedback">
+      <h2><i class="fas fa-comment"></i> 问题反馈</h2>
+      <p class="subtitle">遇到问题或有建议？请填写以下表单告诉我们</p>
+      <p style="margin-bottom:18px;font-size:13px;color:rgba(255,255,255,0.6);">
+        <i class="fab fa-github"></i> 也可在 GitHub 提交 Issue：
+        <a href="https://github.com/farmer-snack/farmer-snack.github.io/issues" target="_blank" style="color:#a18cd1;text-decoration:none;">
+          github.com/farmer-snack/farmer-snack.github.io/issues <i class="fas fa-external-link-alt" style="font-size:11px;"></i>
+        </a>
+      </p>
+
+      <form id="feedbackForm">
+        <div class="form-group">
+          <label>相关项目 <span class="required">*</span></label>
+          <select name="project" required>
+            <option value="">请选择</option>
+            <option value="tectdos">TectDos 系统工具</option>
+            <option value="ai-skills">AI Skills</option>
+            <option value="minecraft-mods">Minecraft Mods</option>
+            <option value="other">其他 / 网站问题</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>反馈类型 <span class="required">*</span></label>
+          <select name="type" required>
+            <option value="">请选择</option>
+            <option value="bug">程序错误 / Bug</option>
+            <option value="feature">功能建议</option>
+            <option value="compatibility">兼容性问题</option>
+            <option value="other">其他</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>您的称呼</label>
+          <input type="text" name="name" placeholder="请输入您的称呼（选填）">
+        </div>
+
+        <div class="form-group">
+          <label>联系方式</label>
+          <input type="text" name="contact" placeholder="邮箱 / 微信 / QQ（选填）">
+        </div>
+
+        <div class="form-group">
+          <label>问题描述 <span class="required">*</span></label>
+          <textarea name="message" placeholder="请详细描述您遇到的问题或建议…" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>验证码 <span class="required">*</span></label>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <input type="text" id="captchaInput" placeholder="请输入右侧验证码" style="flex:1;" autocomplete="off">
+            <span id="captchaBox" title="点击刷新" style="cursor:pointer;user-select:none;font-family:Consolas,monospace;font-size:22px;font-weight:700;letter-spacing:6px;padding:9px 18px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);border-radius:10px;color:#fbc2eb;text-shadow:0 0 6px rgba(251,194,235,0.6);"></span>
+            <button type="button" id="captchaRefresh" title="刷新验证码" style="padding:9px 14px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);border-radius:10px;color:#fff;cursor:pointer;"><i class="fas fa-sync-alt"></i></button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">
+          <i class="fas fa-paper-plane"></i> 提交反馈
+        </button>
+      </form>
+    </div>
+
     <footer>
       <a href="DownLoads/TectDos/terms.html"><i class="fas fa-file-contract"></i> 用户条款</a> · &copy; 2026 Download Center
     </footer>
@@ -353,6 +511,148 @@
   </div>
 
   <script>
+    // Toast 提示
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // 验证码
+    let captchaCode = '';
+    function generateCaptcha() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+      captchaCode = '';
+      for (let i = 0; i < 4; i++) {
+        captchaCode += chars[Math.floor(Math.random() * chars.length)];
+      }
+      const box = document.getElementById('captchaBox');
+      if (box) box.textContent = captchaCode;
+      const input = document.getElementById('captchaInput');
+      if (input) input.value = '';
+    }
+    document.getElementById('captchaRefresh')?.addEventListener('click', generateCaptcha);
+    document.getElementById('captchaBox')?.addEventListener('click', generateCaptcha);
+    generateCaptcha();
+
+    // 反馈提交 - 使用 Formsubmit.co（完全免费，无需注册）
+    const FEEDBACK_TOKEN = 'c12a9bde3021cf0098233cc904f6fd12';
+
+    document.getElementById('feedbackForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const project = this.project.value;
+      const type = this.type.value;
+      const message = this.message.value.trim();
+      if (!project) { showToast('请选择相关项目'); return; }
+      if (!type) { showToast('请选择反馈类型'); return; }
+      if (!message) { showToast('请填写问题描述'); return; }
+      const captchaInput = document.getElementById('captchaInput').value.trim();
+      if (!captchaInput) { showToast('请输入验证码'); return; }
+      if (captchaInput.toLowerCase() !== captchaCode.toLowerCase()) {
+        showToast('验证码错误，请重新输入');
+        generateCaptcha();
+        return;
+      }
+
+      const btn = this.querySelector('.btn-submit');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中…';
+
+      // 获取用户IP和地理位置（不显示在前端）
+      let geo = { ip: '', ipv4: '', country: '', region: '', city: '', isp: '' };
+
+      // 国内服务：IPv6 + 地理位置 + 运营商
+      try {
+        const c = new AbortController();
+        const t = setTimeout(() => c.abort(), 8000);
+        const text = await fetch('https://myip.ipip.net', { signal: c.signal }).then(r => r.text());
+        clearTimeout(t);
+        const ipM = text.match(/\d[\d.:a-fA-F]+/);
+        if (ipM) geo.ip = ipM[0];
+        const locM = text.match(/来自于：(.+)/);
+        if (locM) {
+          const parts = locM[1].split(/\s+/).filter(Boolean);
+          if (parts[0]) geo.country = parts[0];
+          if (parts[1]) geo.region = parts[1];
+          if (parts[2]) geo.city = parts[2];
+          if (parts[3]) geo.isp = parts[3];
+        }
+      } catch {}
+
+      // 获取 IPv4（多服务备用）
+      const ipv4Sources = [
+        { url: 'https://ipv4.icanhazip.com', type: 'text' },
+        { url: 'https://4.ipw.cn', type: 'text' },
+        { url: 'https://api.ipify.org?format=json', type: 'json', key: 'ip' }
+      ];
+      for (const src of ipv4Sources) {
+        if (geo.ipv4) break;
+        try {
+          const c = new AbortController();
+          const t = setTimeout(() => c.abort(), 5000);
+          const r = await fetch(src.url, { signal: c.signal });
+          let v = '';
+          if (src.type === 'json') v = (await r.json())[src.key] || '';
+          else v = (await r.text()).trim();
+          clearTimeout(t);
+          if (v && /^\d+\.\d+\.\d+\.\d+$/.test(v)) geo.ipv4 = v;
+        } catch {}
+      }
+
+      // 备用：国际服务
+      if (!geo.ip) {
+        try {
+          const c = new AbortController();
+          const t = setTimeout(() => c.abort(), 5000);
+          const r = await fetch('https://api.ipify.org?format=json', { signal: c.signal }).then(r => r.json());
+          clearTimeout(t);
+          geo.ip = r.ip || '';
+        } catch {}
+      }
+
+      try {
+        const res = await fetch('https://formsubmit.co/ajax/' + FEEDBACK_TOKEN, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            相关项目: this.project.value,
+            反馈类型: this.type.value,
+            称呼: this.name.value || '未填写',
+            联系方式: this.contact.value || '未填写',
+            描述: this.message.value,
+            _captcha: 'false',
+            'IP地址': geo.ip,
+            'IPv4地址': geo.ipv4,
+            '所在国家': geo.country,
+            '所在地区': geo.region,
+            '所在城市': geo.city,
+            '网络运营商': geo.isp
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('感谢您的反馈！已发送成功 ❤');
+          this.reset();
+        } else {
+          showToast('提交失败，请稍后重试');
+        }
+      } catch {
+        // 备用：复制到剪贴板
+        const text = `相关项目: ${this.project.value}\n反馈类型: ${this.type.value}\n称呼: ${this.name.value || '未填写'}\n联系方式: ${this.contact.value || '未填写'}\n描述: ${this.message.value}`;
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast('网络异常，反馈内容已复制，请手动发送给开发者 ❤');
+        } catch {
+          showToast('提交失败，请检查网络后重试');
+        }
+        this.reset();
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> 提交反馈';
+    });
+
     // 平滑滚动
     document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
       a.addEventListener('click', function (e) {
