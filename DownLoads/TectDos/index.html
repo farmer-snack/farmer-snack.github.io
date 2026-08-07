@@ -641,7 +641,7 @@
     });
 
     // 平滑滚动
-    document.querySelectorAll('.nav-links a').forEach(a => {
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
       a.addEventListener('click', function (e) {
         e.preventDefault();
         const id = this.getAttribute('href').slice(1);
